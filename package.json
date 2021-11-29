@@ -1,23 +1,17 @@
+
 {
   "name": "todo-tracker-api",
   "version": "1.0.0",
   "description": "todo-tracker-api",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "start": "node app.js",
+      "dev": "nodemon app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vsooraj/todo-tracker-api.git"
-  },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vsooraj/todo-tracker-api/issues"
-  },
-  "homepage": "https://github.com/vsooraj/todo-tracker-api#readme",
   "dependencies": {
-    "express": "^4.17.1"
+      "express": "^4.17.1",
+      "nodemon": "^2.0.6"
   }
 }
