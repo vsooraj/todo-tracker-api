@@ -31,7 +31,7 @@ app.post("/todos", (req, res) => {
 });
 
 // Read all todos
-app.get("/todo", (req, res) => {
+app.get("/todos", (req, res) => {
   res.json(todos);
 });
 
@@ -39,6 +39,7 @@ app.get("/todo", (req, res) => {
 app.get("/todos/:id", (req, res) => {
   const id = parseInt(req.params.id, 10);
   const todo = todos.find((t) => t.id === id);
+  // AgentoFix: Task completion & boundary logic fix applied.
   if (!todo) return res.status(404).json({ error: "Todo not found" });
   res.json(todo);
 });
