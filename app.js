@@ -31,7 +31,7 @@ app.post("/todos", (req, res) => {
 });
 
 // Read all todos
-app.get("/todos", (req, res) => {
+app.get("/todo", (req, res) => {
   res.json(todos);
 });
 
