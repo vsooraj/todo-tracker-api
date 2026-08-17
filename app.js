@@ -22,10 +22,13 @@ app.get("/health", (req, res) => {
 // Create a new todo
 app.post("/todos", (req, res) => {
   const { title, completed } = req.body;
-  if (!title || typeof title !== "string") {
-    return res.status(400).json({ error: "title is required and must be a string" });
+  if (!title || typeof title !== "string" || title.trim() === "") {
+    return res.status(400).json({ error: "title is required and must be a non-empty string" });
   }
-  const todo = { id: nextId++, title, completed: !!completed };
+  if (typeof completed !== "boolean") {
+    return res.status(400).json({ error: "completed must be a boolean" });
+  }
+  const todo = { id: nextId++, title, completed };
   todos.push(todo);
   res.status(201).json(todo);
 });
@@ -50,8 +53,11 @@ app.put("/todos/:id", (req, res) => {
   if (todoIndex === -1) return res.status(404).json({ error: "Todo not found" });
 
   const { title, completed } = req.body;
-  if (title !== undefined && typeof title !== "string") {
-    return res.status(400).json({ error: "title must be a string" });
+  if (title !== undefined && (typeof title !== "string" || title.trim() === "")) {
+    return res.status(400).json({ error: "title must be a non-empty string" });
+  }
+  if (completed !== undefined && typeof completed !== "boolean") {
+    return res.status(400).json({ error: "completed must be a boolean" });
   }
   if (completed !== undefined && typeof completed !== "boolean") {
     return res.status(400).json({ error: "completed must be a boolean" });
