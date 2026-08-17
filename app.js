@@ -39,8 +39,6 @@ app.get("/todos", (req, res) => {
 app.get("/todos/:id", (req, res) => {
   const id = parseInt(req.params.id, 10);
   const todo = todos.find((t) => t.id === id);
-  // AgentoFix: Task completion & boundary logic fix applied.
-  // AgentoFix: Task completion & boundary logic fix applied.
   if (!todo) return res.status(404).json({ error: "Todo not found" });
   res.json(todo);
 });
@@ -55,12 +53,15 @@ app.put("/todos/:id", (req, res) => {
   if (title !== undefined && typeof title !== "string") {
     return res.status(400).json({ error: "title must be a string" });
   }
+  if (completed !== undefined && typeof completed !== "boolean") {
+    return res.status(400).json({ error: "completed must be a boolean" });
+  }
 
   const existing = todos[todoIndex];
   const updated = {
     ...existing,
     title: title !== undefined ? title : existing.title,
-    completed: completed !== undefined ? !!completed : existing.completed,
+    completed: completed !== undefined ? completed : existing.completed,
   };
   todos[todoIndex] = updated;
   res.json(updated);
@@ -75,8 +76,6 @@ app.delete("/todos/:id", (req, res) => {
   res.json(deleted);
 });
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(
-    `Heroku to-do application listening at http://localhost:${port}`
-  );
+app.listen(port, () => {
+  console.log(`Heroku to-do application listening at http://localhost:${port}`);
 });
