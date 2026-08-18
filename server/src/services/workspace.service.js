@@ -1,0 +1,35 @@
+const workspaceRepository = require("../repositories/workspace.repository");
+
+function makeSlug(name) {
+  return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function listForUser(userId) {
+  return workspaceRepository.findByMember(userId);
+}
+
+function isValidSlug(slug) {
+  return /^[a-z0-9](?:[a-z0-9-]{1,28}[a-z0-9])$/.test(slug);
+}
+
+function slugAvailability(slug) {
+  const normalizedSlug = String(slug || "").trim().toLowerCase();
+  if (!isValidSlug(normalizedSlug)) return { available: false, reason: "Use 3–30 lowercase letters, numbers, and hyphens." };
+  if (workspaceRepository.findBySlug(normalizedSlug)) return { available: false, reason: "This slug is already in use." };
+  return { available: true, slug: normalizedSlug };
+}
+
+function create(userId, { name, slug }) {
+  if (!name || typeof name !== "string" || !name.trim()) {
+    return { error: "workspace name is required" };
+  }
+
+  const trimmedName = name.trim();
+  if (trimmedName.length > 100) return { error: "workspace name must be 100 characters or fewer" };
+  const resolvedSlug = slug ? String(slug).trim().toLowerCase() : makeSlug(trimmedName);
+  const availability = slugAvailability(resolvedSlug);
+  if (!availability.available) return { error: availability.reason };
+  return { workspace: workspaceRepository.create({ name: trimmedName, slug: availability.slug, ownerId: userId }) };
+}
+
+module.exports = { listForUser, create, slugAvailability };
