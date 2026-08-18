@@ -7,15 +7,29 @@
     "start": "node server/src/server.js",
     "dev": "nodemon server/src/server.js",
     "client:dev": "npm run dev --prefix client",
-    "client:build": "npm run build --prefix client"
+    "client:build": "npm run build --prefix client",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@clerk/express": "^1.7.2",
+    "@prisma/client": "^6.19.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.17.1",
-    "nodemon": "^2.0.6"
+    "express-async-errors": "^3.1.1",
+    "nodemon": "^2.0.6",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.0"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }

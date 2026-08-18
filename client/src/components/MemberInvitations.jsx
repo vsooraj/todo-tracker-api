@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { inviteUserToWorkspace, getWorkspaceInvitations } from "../../services/api";
+import { inviteUserToWorkspace, getWorkspaceInvitations } from "../services/api";
 
 export default function MemberInvitations({ workspace, currentUserId, onInvitationAdded }) {
   const [invitations, setInvitations] = useState([]);

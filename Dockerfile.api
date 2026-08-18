@@ -1,0 +1,19 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+RUN apk add --no-cache openssl
+
+COPY package.json package-lock.json ./
+COPY prisma ./prisma
+
+RUN npm ci && npx prisma generate
+
+COPY server ./server
+COPY docker/server-entrypoint.sh /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+
+ENV NODE_ENV=production
+EXPOSE 5000
+
+ENTRYPOINT ["/entrypoint.sh"]

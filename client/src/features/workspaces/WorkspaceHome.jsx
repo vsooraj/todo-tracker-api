@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Brand from "../../components/Brand";
 import MemberInvitations from "../../components/MemberInvitations";
+import ProjectPanel from "../projects/ProjectPanel";
 import { activateWorkspace, createWorkspace, getWorkspaces, getPendingInvitations, acceptInvitation } from "../../services/api";
 
 export default function WorkspaceHome({ onSignOut }) {
@@ -11,7 +12,7 @@ export default function WorkspaceHome({ onSignOut }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [pendingInvitations, setPendingInvitations] = useState([]);
-  const [currentUserId] = useState(() => sessionStorage.getItem("user-id") || "demo-user");
+  const [currentUserId] = useState(() => sessionStorage.getItem("user-id") || "local-demo-user");
   const [acceptingInviteId, setAcceptingInviteId] = useState(null);
 
   const activeWorkspace = useMemo(
@@ -185,6 +186,8 @@ export default function WorkspaceHome({ onSignOut }) {
         )}
 
         {activeWorkspace && <MemberInvitations workspace={activeWorkspace} currentUserId={currentUserId} />}
+
+        {activeWorkspace && <ProjectPanel workspace={activeWorkspace} currentUserId={currentUserId} />}
 
         <form className="workspace-form" onSubmit={submit}>
           <label>

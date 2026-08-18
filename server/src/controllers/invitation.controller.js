@@ -1,23 +1,7 @@
 const invitationService = require("../services/invitation.service");
+const { currentUser } = require("../utils/user.helper");
 
-function currentUser(req) {
-  if (req.basicUser) {
-    return {
-      id: req.basicUser.id,
-      name: req.basicUser.name,
-      email: req.basicUser.email,
-    };
-  }
-
-  const auth = require("@clerk/express").getAuth(req);
-  return {
-    id: auth.userId,
-    name: auth.username || "User",
-    email: auth.email || "",
-  };
-}
-
-function invite(req, res) {
+async function invite(req, res) {
   const user = currentUser(req);
   const { workspaceId, inviteeEmail } = req.body;
 
@@ -25,7 +9,7 @@ function invite(req, res) {
     return res.status(400).json({ error: "workspaceId and inviteeEmail are required" });
   }
 
-  const result = invitationService.inviteUser(workspaceId, inviteeEmail, user.id);
+  const result = await invitationService.inviteUser(workspaceId, inviteeEmail, user.id);
   if (result.error) {
     return res.status(400).json({ error: result.error });
   }
@@ -33,7 +17,7 @@ function invite(req, res) {
   return res.status(201).json(result.invitation);
 }
 
-function accept(req, res) {
+async function accept(req, res) {
   const user = currentUser(req);
   const { invitationId } = req.params;
 
@@ -41,7 +25,7 @@ function accept(req, res) {
     return res.status(400).json({ error: "invitationId is required" });
   }
 
-  const result = invitationService.acceptInvitation(invitationId, user.id, user.email, user.name);
+  const result = await invitationService.acceptInvitation(invitationId, user.id, user.email, user.name);
   if (result.error) {
     return res.status(400).json({ error: result.error });
   }
@@ -49,20 +33,20 @@ function accept(req, res) {
   return res.json(result);
 }
 
-function getPending(req, res) {
+async function getPending(req, res) {
   const user = currentUser(req);
-  const invitations = invitationService.getPendingInvitations(user.email);
+  const invitations = await invitationService.getPendingInvitations(user.email);
   return res.json(invitations);
 }
 
-function listWorkspaceInvitations(req, res) {
+async function listWorkspaceInvitations(req, res) {
   const { workspaceId } = req.params;
 
   if (!workspaceId) {
     return res.status(400).json({ error: "workspaceId is required" });
   }
 
-  const invitations = invitationService.getWorkspaceInvitations(workspaceId);
+  const invitations = await invitationService.getWorkspaceInvitations(workspaceId);
   return res.json(invitations);
 }
 

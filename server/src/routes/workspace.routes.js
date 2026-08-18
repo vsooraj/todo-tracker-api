@@ -8,6 +8,7 @@ const requireApplicationAuth = process.env.CLERK_SECRET_KEY ? requireAuth() : re
 
 router.use(requireApplicationAuth);
 router.get("/slug-availability", workspaceController.slugAvailability);
+router.get("/current", workspaceController.getCurrent);
 router.post("/:workspaceId/activate", workspaceController.activate);
 router.get("/", workspaceController.list);
 router.post("/", workspaceController.create);
