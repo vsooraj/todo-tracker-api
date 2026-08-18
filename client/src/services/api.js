@@ -31,6 +31,15 @@ export async function createWorkspace(name, slug) {
   return response.json();
 }
 
+export async function activateWorkspace(workspaceId) {
+  const response = await fetch(`${apiBaseUrl}/api/v1/workspaces/${workspaceId}/activate`, {
+    method: "POST",
+    headers: basicHeaders(),
+  });
+  if (!response.ok) throw new Error("Unable to switch the workspace.");
+  return response.json();
+}
+
 export async function getSlugAvailability(slug) {
   const response = await fetch(`${apiBaseUrl}/api/v1/workspaces/slug-availability?slug=${encodeURIComponent(slug)}`, { headers: basicHeaders() });
   if (!response.ok) throw new Error("Unable to validate the workspace slug.");
@@ -41,5 +50,36 @@ export async function getCurrentUser(getToken) {
   const token = await getToken();
   const response = await fetch(`${apiBaseUrl}/api/v1/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
   if (!response.ok) throw new Error("Unable to load the current user.");
+  return response.json();
+}
+
+export async function inviteUserToWorkspace(workspaceId, inviteeEmail) {
+  const response = await fetch(`${apiBaseUrl}/api/v1/invitations`, {
+    method: "POST",
+    headers: { ...basicHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify({ workspaceId, inviteeEmail }),
+  });
+  if (!response.ok) throw new Error("Unable to send invitation.");
+  return response.json();
+}
+
+export async function acceptInvitation(invitationId) {
+  const response = await fetch(`${apiBaseUrl}/api/v1/invitations/${invitationId}/accept`, {
+    method: "POST",
+    headers: basicHeaders(),
+  });
+  if (!response.ok) throw new Error("Unable to accept invitation.");
+  return response.json();
+}
+
+export async function getPendingInvitations() {
+  const response = await fetch(`${apiBaseUrl}/api/v1/invitations/pending`, { headers: basicHeaders() });
+  if (!response.ok) throw new Error("Unable to load invitations.");
+  return response.json();
+}
+
+export async function getWorkspaceInvitations(workspaceId) {
+  const response = await fetch(`${apiBaseUrl}/api/v1/invitations/workspace/${workspaceId}`, { headers: basicHeaders() });
+  if (!response.ok) throw new Error("Unable to load workspace invitations.");
   return response.json();
 }
