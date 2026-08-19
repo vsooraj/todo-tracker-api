@@ -7,7 +7,16 @@ function create(req, res) {
 }
 
 function list(req, res) {
-  res.json(todoService.list());
+  const filter = req.query.filter;
+  let todos = todoService.list();
+
+  if (filter === 'active') {
+    todos = todos.filter(todo => !todo.completed);
+  } else if (filter === 'done') {
+    todos = todos.filter(todo => todo.completed);
+  }
+
+  res.json(todos);
 }
 
 function getById(req, res) {
