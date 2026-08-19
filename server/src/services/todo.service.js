@@ -37,11 +37,11 @@ async function update(id, { title, completed }) {
 }
 
 async function remove(id) {
-  const result = await todoRepository.remove(id);
-  if (!result) {
-    return { error: "Todo not found or removal failed" };
+  const todo = await todoRepository.remove(id);
+  if (!todo) {
+    return { error: "Todo not found" };
   }
-  return { success: true };
+  return { todo };
 }
 
 module.exports = { create, list, getById, update, remove };
