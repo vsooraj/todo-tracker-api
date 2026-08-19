@@ -11,6 +11,13 @@ function BasicAuthApp() {
 }
 
 export default function App({ basicAuthEnabled = false }) {
+  React.useEffect(() => {
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.href = '/favicon.ico';
+    document.head.appendChild(link);
+  }, []);
+
   if (basicAuthEnabled) return <BasicAuthApp />;
 
   return (
