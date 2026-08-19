@@ -19,9 +19,9 @@ function list(req, res) {
   res.json(todos);
 }
 
-function getById(req, res) {
-  const todo = todoService.getById(req.params.id);
-  if (!todo) return res.status(404).json({ error: "Todo not found" });
+async function getById(req, res) {
+  const { todo, error } = await todoService.getById(req.params.id);
+  if (error) return res.status(404).json({ error });
   return res.json(todo);
 }
 
