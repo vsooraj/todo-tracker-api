@@ -10,9 +10,9 @@ async function create({ title, completed }) {
 async function list(filter) {
   const todos = await todoRepository.findAll();
   if (filter === 'active') {
-    return todos.filter(todo => todo.completed);
-  } else if (filter === 'done') {
     return todos.filter(todo => !todo.completed);
+  } else if (filter === 'done') {
+    return todos.filter(todo => todo.completed);
   }
   return todos;
 }
