@@ -1,29 +1,41 @@
 const todoRepository = require("../repositories/todo.repository");
 
-function create({ title, completed }) {
+async function create({ title, completed }) {
   if (!title || typeof title !== "string") {
     return { error: "title is required and must be a string" };
   }
-  return { todo: todoRepository.create({ title: title.trim(), completed: Boolean(completed) }) };
+  return { todo: await todoRepository.create({ title: title.trim(), completed: Boolean(completed) }) };
 }
 
-function list() {
-  return todoRepository.findAll();
+async function list() {
+  return await todoRepository.findAll();
 }
 
-function getById(id) {
-  return todoRepository.findById(id);
+async function getById(id) {
+  const todo = await todoRepository.findById(id);
+  if (!todo) {
+    return { error: "Todo not found" };
+  }
+  return { todo };
 }
 
-function update(id, { title, completed }) {
+async function update(id, { title, completed }) {
   if (title !== undefined && typeof title !== "string") {
     return { error: "title must be a string" };
   }
-  return { todo: todoRepository.update(id, { title, completed }) };
+  const updatedTodo = await todoRepository.update(id, { title, completed });
+  if (!updatedTodo) {
+    return { error: "Todo not found or update failed" };
+  }
+  return { todo: updatedTodo };
 }
 
-function remove(id) {
-  return todoRepository.remove(id);
+async function remove(id) {
+  const result = await todoRepository.remove(id);
+  if (!result) {
+    return { error: "Todo not found or removal failed" };
+  }
+  return { success: true };
 }
 
 module.exports = { create, list, getById, update, remove };
