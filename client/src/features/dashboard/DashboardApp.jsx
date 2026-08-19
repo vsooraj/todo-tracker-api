@@ -6,6 +6,7 @@ import {
   CheckSquare,
   HelpCircle,
   LayoutDashboard,
+  ListTodo,
   Moon,
   Plus,
   Search,
@@ -16,6 +17,7 @@ import MemberInvitations from "../../components/MemberInvitations";
 import WorkspaceSwitcher from "../../components/WorkspaceSwitcher";
 import ProjectListingView from "../projects/ProjectListingView";
 import MyTasksView from "../tasks/MyTasksView";
+import TodoView from "../todos/TodoView";
 import DashboardHome from "./DashboardHome";
 import { getProjects } from "../../services/api";
 
@@ -24,6 +26,7 @@ const navItems = [
   { id: "projects", label: "Projects", icon: CheckSquare },
   { id: "team", label: "Team", icon: Users },
   { id: "tasks", label: "My Tasks", icon: CheckSquare },
+  { id: "todos", label: "Todos", icon: ListTodo },
   { id: "calendar", label: "Calendar", icon: Calendar },
   { id: "analytics", label: "Analytics", icon: BarChart3 },
 ];
@@ -85,6 +88,9 @@ export default function DashboardApp({
           onOpenTask={() => setActiveView("projects")}
         />
       );
+    }
+    if (activeView === "todos") {
+      return <TodoView />;
     }
 
     return (

@@ -221,3 +221,40 @@ export async function getTaskComments(taskId) {
   if (!response.ok) throw new Error("Unable to load comments.");
   return response.json();
 }
+
+export async function getTodos() {
+  const response = await fetch(`${apiBaseUrl}/api/v1/todos`);
+  if (!response.ok) throw new Error("Unable to load todos.");
+  return response.json();
+}
+
+export async function createTodo(payload) {
+  const response = await fetch(`${apiBaseUrl}/api/v1/todos`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Unable to create todo.");
+  return data;
+}
+
+export async function updateTodo(todoId, payload) {
+  const response = await fetch(`${apiBaseUrl}/api/v1/todos/${todoId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Unable to update todo.");
+  return data;
+}
+
+export async function deleteTodo(todoId) {
+  const response = await fetch(`${apiBaseUrl}/api/v1/todos/${todoId}`, { method: "DELETE" });
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || "Unable to delete todo.");
+  }
+  return response.json();
+}
