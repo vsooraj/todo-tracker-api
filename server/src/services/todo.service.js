@@ -7,8 +7,14 @@ async function create({ title, completed }) {
   return { todo: await todoRepository.create({ title: title.trim(), completed: Boolean(completed) }) };
 }
 
-async function list() {
-  return await todoRepository.findAll();
+async function list(filter) {
+  const todos = await todoRepository.findAll();
+  if (filter === 'active') {
+    return todos.filter(todo => !todo.completed);
+  } else if (filter === 'done') {
+    return todos.filter(todo => todo.completed);
+  }
+  return todos;
 }
 
 async function getById(id) {

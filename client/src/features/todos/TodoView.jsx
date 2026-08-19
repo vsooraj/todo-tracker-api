@@ -59,8 +59,8 @@ export default function TodoView() {
   const filteredTodos = useMemo(() => {
     let items = [...todos];
 
-    if (filter === "active") items = items.filter((todo) => todo.completed);
-    if (filter === "done") items = items.filter((todo) => !todo.completed);
+    if (filter === "active") items = items.filter((todo) => !todo.completed);
+    if (filter === "done") items = items.filter((todo) => todo.completed);
 
     const query = search.trim().toLowerCase();
     if (query) {
