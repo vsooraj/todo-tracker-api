@@ -39,7 +39,7 @@ function BasicSignInForm({ onAuthenticated }) {
 export default function LoginPage({ basicAuth = false, onAuthenticated }) {
   return (
     <main className="auth-page">
-      <section className="sign-in-panel"><div className="form-wrap"><Brand /><h1>Welcome Back! <span aria-hidden="true">👋</span></h1><p className="subtitle">Sign in to your account to continue</p>{basicAuth ? <BasicSignInForm onAuthenticated={onAuthenticated} /> : <SignIn routing="hash" signUpUrl="#/sign-up" fallbackRedirectUrl="/" />}</div></section>
+      <section className="sign-in-panel"><div className="form-wrap"><Brand /><h1>Welcome Back!</h1><p className="subtitle">Sign in to your account to continue</p>{basicAuth ? <BasicSignInForm onAuthenticated={onAuthenticated} /> : <SignIn routing="hash" signUpUrl="#/sign-up" fallbackRedirectUrl="/" />}</div></section>
       <LoginIllustration />
     </main>
   );

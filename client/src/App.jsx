@@ -16,6 +16,8 @@ export default function App({ basicAuthEnabled = false }) {
     link.rel = 'icon';
     link.href = '/favicon.ico';
     document.head.appendChild(link);
+
+    document.title = "Index Page"; // Fix: Set the correct title for the index page
   }, []);
 
   if (basicAuthEnabled) return <BasicAuthApp />;
