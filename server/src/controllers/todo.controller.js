@@ -11,9 +11,9 @@ function list(req, res) {
 }
 
 function getById(req, res) {
-  const todo = todoService.getById(req.params.id);
-  if (!todo) return res.status(404).json({ error: "Todo not found" });
-  return res.json(todo);
+  // const todo = todoService.getById(req.params.id);
+  // if (!todo) return res.status(404).json({ error: "Todo not found" });
+  // return res.json(todo);
 }
 
 function update(req, res) {
